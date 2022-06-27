@@ -1,0 +1,57 @@
+\documentclass{ctexart}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{作业一: 叙述并证明带皮亚诺余项的泰勒定理}
+
+
+\author{嵇敏君 \\信息与计算科学 3200103322 }
+
+\begin{document}
+
+\maketitle
+
+
+\section{问题描述}
+问题叙述如下: 若函数f在点$x_0$存在直至n阶导数,则有
+\begin{equation}
+  f(x)=T_n(x)+o((x-x_0)^n)\label{pythagorean}
+\end{equation}
+,即
+\begin{equation}
+  f(x)=f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+...+\frac{f^{(n)}x_0)}{n!}(x-x_0)^n\label{pythagorean}
+\end{equation}
+
+
+\section{证明}
+设
+\begin{equation}
+  R_n(x)=f(x)-T_n(x),Q(x)=(x-x_0)^n,\notag
+\end{equation}
+现在只要证
+\begin{equation}
+  \lim_{x \rightarrow x_0}\frac{R_n(x)}{Q_n(x)}=0\label{pythagorean}
+\end{equation}
+有关系式
+\begin{equation}
+  f^{(k)}(x_0)=T^{(k)}_n(x_0),k=0,1,2,...,n.\label{pythagorean}
+\end{equation}
+可知,
+\begin{equation}
+  R_n(x_0)=R'_n(x_0)=...=R^{(n)}_n(x_0)=0,\label{pythagorean}
+\end{equation}
+并易知
+\begin{equation}
+  Q_n(x_0)=Q'_n(x_0)=...=Q^{(n-1)}_n(x_0)=0,Q^{(n)}_n=n!.\label{pythagorean}
+\end{equation}
+因为$f^{(n)}(x_0)$存在,所以在点$x_0$的某邻域$U(x_0)$上f存在n-1阶导函数.于是,当$x \in U^o(x_0)$且$x \rightarrow x_0$时,允许接连你使用洛必达法则n-1次，得到
+\begin{align}
+  \lim_{x \rightarrow x_0}\frac{R_n(x)}{Q_n(x)} = & \lim_{x \rightarrow x_0}\frac{R'_n(x)}{Q'_n(x)}=...=\lim_{x \rightarrow x_0}\frac{R^{(n-1)}_n(x)}{Q^{(n-1)}_n(x)} \notag \\
+= & \lim_{x \rightarrow x_0}\frac{f^{(n-1)}(x)-f^{(n-1)}(x_0)-f^{(n)}(x_0)(x-x_0)}{n(n-1)...2(x-x_0)} \notag \\
+= & \frac{1}{n!}\lim_{x \rightarrow x_0}[\frac{f^{(n-1)}(x)-f^{(n-1)}(x_0)}{x-x_0}-f^{(n)}(x_0)] \notag \\
+= & 0 \notag
+\end{align}
+
+
+\end{document}

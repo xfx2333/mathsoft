@@ -1,0 +1,227 @@
+\documentclass{ctexart}
+
+
+\title{作业二: shell文件下的分支结构与循环结构}
+
+
+\author{嵇敏君 \\信息与计算科学 3200103322 }
+
+\begin{document}
+
+\maketitle
+
+shell文件下的分支结构与循环结构同python,C++等的结构有较大的区别,下面便大致区分一下shell文件的分支结构与循环结构同python,C++的区别
+\section{分支结构}
+分支结构主要是if语句与case语句
+\subsection{if语句}
+python的if语句结构体如下：
+\begin{verbatim}
+if condition
+  statements
+elif condition
+  statements
+else
+  statements
+\end{verbatim}
+而在shell文件下,if结构体变成了：
+\begin{verbatim}
+if condition
+then
+  statements
+elif condition
+then
+  statements
+else
+  statements
+fi
+\end{verbatim}
+这里
+\begin{verbatim}
+if/elif condition
+then
+\end{verbatim}
+也可写成
+\begin{verbatim}
+if/elif condition; then
+\end{verbatim}
+可以看出,在shell文件下,if语句在判断之后,\verb|if|与\verb|elif|的后面都接上了一个\verb|then|,同时,在整个if语句结束之后,shell文件最后一行还需要加上一个\verb|fi|,而且在shell文件中,condition的判断需要用[]
+接着,我们用书本35页中的一个案例来测试一下,测试代码如下：
+\begin{verbatim}
+#!/bin/bash
+
+echo "Is it morning? Please answer yes or no"
+read timeofday
+if [ $timeofday = "yes" ]
+then
+  echo "Good morning"
+elif [ $timeofday = "no" ]; then
+  echo "Good afternoon"
+else
+  echo "Sorry,$timeofday not recognized.Enter yes or no"
+  exit1
+fi
+
+exit 0
+\end{verbatim}
+这里我们要注意条件判断时,\verb|$timeofday="yes"|与\verb|"$timeofday"="yes"|的区别
+\subsection{case语句}
+在python中,case语句的结构体为：
+\begin{verbatim}
+switch (variable){
+case pattern1: statements;
+case pattern2: statements;
+...
+case patternn: statements;
+default: statemens;}
+\end{verbatim}
+case结构体如下：
+\begin{verbatim}
+case variable in
+  pattern [ | pattern] ...) statements;;
+  pattern [ | pattern] ...) statements;;
+  ...
+esac
+\end{verbatim}
+可以看到，shell文件的case语句与python中的语句差异较大,python中case会与switch一起使用,每个statements后都有一个;,结尾处有一个default来表示其他所有情况.而在shell文件中,case作为开头与in一起使用,每个statements后都有两个;(;;),同时结尾处用了一个esac(case反过来写)表示结束
+下面我们用书本中的几个案例来体会一下case
+case1:
+\begin{verbatim}
+#!/bin/bash
+
+echo "Is it morning? Please answer yes or no"
+read timeofday
+
+case "$timeofday" in
+    yes) echo "Good morning";;
+    no ) echo "Good afternoon";;
+    y  ) echo "Good morning";;
+    n  ) echo "Good afternoon";;
+    *  ) echo "Sorry, answer not recognized";;
+esac
+
+exit 0
+\end{verbatim}
+可以看出,在shell文件中,用*来表示其他所有的情况，但是,这样子不能尽可能多的作出正确的判断,如对于大小写的判断就不够灵敏,于是便有如下两种方法
+case2:
+\begin{verbatim}
+#!/bin/bash
+
+echo "Is it morning? Please answer yes or no"
+read timeofday
+
+case "$timeofday" in
+    yes | y | Yes | YES) echo "Good morning";;
+    n* | N* ) echo "Good afternoon";;
+    *  ) echo "Sorry, answer not recognized";;
+esac
+
+exit 0
+\end{verbatim}
+case3:
+\begin{verbatim}
+#!/bin/bash
+
+echo "Is it morning? Please answer yes or no"
+read timeofday
+
+case "$timeofday" in
+    yes | y | Yes | YES) 
+           echo "Good morning"
+           echo "Up bright and early this morning";;
+    [nN]* ) 
+           echo "Good afternoon";;
+    *) 
+           echo "Sorry, answer not recognized"
+           echo "Please answer yes or no"
+           exit 1;;
+esac
+
+exit 0
+\end{verbatim}
+\section{循环结构}
+
+\subsection{for语句}
+在shell文件中,由于输入与进行判断的都是字符串,而不是像python中的一个个数字,故for语句也只能进行字符串的替换，结构体如下：
+\begin{verbatim}
+for ... in srt1 str2 str3
+do
+  statements
+done
+\end{verbatim}
+相比与python,可以看到我们在for语句后面多了一个\verb|do|,在结束时加上了一个\verb|done|
+同样,我们用书本37页的案例进行测试，测试代码如下：
+\begin{verbatim}
+#!/bin/bash
+
+for foo in bar fud 43
+do
+  echo $foo
+done
+exit 0
+\end{verbatim}
+输出的结果为：
+\begin{verbatim}
+bar
+fud
+43
+\end{verbatim}
+但是，若我们将代码换成：
+\begin{verbatim}
+for foo in "bar fud" 43
+do
+  echo $foo
+done
+exit 0
+\end{verbatim}
+此时输出为：
+\begin{verbatim}
+bar fud
+43
+\end{verbatim}
+可以知,当两个字符串被一个""包裹在一起时,他们便构成了一个新的字符串,for语句是将in后面的所有字符串一个一个替换到foo中去,然后执行do后面的语句
+\subsection{while语句}
+shell文件中的while结构体与python中相差不大,就是最判断结束时多了一个\verb|done|,具体结构体如下：
+\begin{verbatim}
+while condition do
+  statements
+done
+\end{verbatim}
+我们用39页的一个代码测试：
+\begin{verbatim}
+#!/bin/bash
+
+echo "Enter password"
+read trythis
+
+while [ "$trythis" != "secret" ]; do
+  echo "Sorry, try again"
+  read trythis
+done
+echo "Pass"
+exit 0
+\end{verbatim}
+\subsection{until语句}
+until语句的情况与while类似,只不过一个是当满足condition时,执行statements(while),一个是当满足condition时结束循环(until),until结构体如下：
+\begin{verbatim}
+until condition
+do
+  statements
+done
+\end{verbatim}
+同样,用书本40页中的代码进行测试：
+\begin{verbatim}
+#!/bin/bash
+
+until who |grep "$1" > /dev/null
+do
+  sleep 60
+done
+
+# now ring the bell and announce the expected user.
+
+echo -e '\a'
+echo ***** $1 has just logged in *****
+
+exit 0
+\end{verbatim}
+\end{document}

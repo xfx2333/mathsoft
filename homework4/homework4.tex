@@ -1,0 +1,140 @@
+\documentclass[a4paper]{ctexart}
+
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\graphicspath{{figures/}}
+
+\title{作业四:《Mandelbrot Set的生成和探索》}
+
+\author{嵇敏君 \\信息与计算科学 3200103322 }
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  本文对于Mandelbrot分形进行了实现以及做出了一些尝试
+\end{abstract}
+
+据老师所说,Mandelbrot分形是“最水的”菲尔兹奖,于是乎,便给我们布置了这样一个“很水”的作业.在我看来,一方面让我们了解到了数学与编程的结合之美,一方面包含着老师对我们的高瞻远瞩般的期待,期待我们能够获得菲尔兹奖.老师的良苦用心让人感动,他真的好温柔,我哭死.
+
+跑远了,本文主要是参考了ACheritat一篇文献\cite{ACheritat}中的思路,借用了王何宇老师的代码来实现Madelbrot分形,得出一些结果并进行分析汇总.
+
+\section{背景介绍}
+曼德勃罗特集是一个几何图形,曾被称为“上帝的指纹”.这个点集均出自公式:$Z_{n+1}=Z^2_n+C$,对于非线性迭代公式$Z_{n+1}=Z^2_n+C$,所有使得无限迭代后的结果能保持有限数值的复数z的集合(也称该迭代函数的Julia集)连通的c,构成曼德勃罗集.它是由美国数学家曼徳勃罗教授于1975年夏天一个夜晚,在冥思苦想之余翻看儿子的拉丁文字典时想到的,其拉丁文的原意是“产生无规则的碎片”.曼德勃罗教授称此为"魔鬼的聚合物".为此,曼德勃罗在1988年获得了"科学行为艺术大奖".
+\section{数学理论}
+M指Mandelbrot Set
+\subsection{定理1}
+若$|c|<\frac{1}{4}$,则$c \in M$
+\subsection{定理2}
+若$c \in M$,则$|c|<2$
+\subsection{定理3}
+若$c \in M$,则$|z_n|<2,(n=1,2,...)$
+\section{算法}
+\subsection{Mandelbrot迭代}
+下面是只有黑白两色的Mandelbrot Set的画法
+\begin{verbatim}
+Set a maximal iteration number N
+For each pixel p of the image:
+  Let c be the complex number represented by p
+  Let z be a complex variable
+  Set z to 0
+  Do the following N times:
+    If |z|>2 then color the pixel white, ned this loop prematurely, go to the next pixel
+    Otherwise replace z by z*z+c
+  If the loop above reached its natural end: color the pixel p in black
+  Go to the next pixel
+\end{verbatim}
+当然,我们也可以对它进行一些修改,以达到能够画出彩色的,甚至三维的Mandelbrot Set
+
+若我们要画出彩色的Mandelbrot Set,可以对于那些\verb!|z|>2!的点再次进行分类,分类的标准是它们不收敛时的迭代次数;若要画出三维图形,那就要对点进行一些改变了.
+\section{数值算例}
+\subsection{用老师的代码做出来的Mandelbrot Set}
+\subsubsection{改变dimension后图像的变化}
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{1000050.bmp}}
+\centerline{dimension=5.0}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{1000030.bmp}}
+\centerline{dimension=3.0}
+\end{minipage}
+\\
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{1000025.bmp}}
+\centerline{dimension=2.5}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{1000020.bmp}}
+\centerline{dimension=2.0}
+\end{minipage}
+\end{figure}
+\subsubsection{改变最大迭代次数后图像的变化（这里取dimension=2.5）}
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{1000025.bmp}}
+\centerline{N=10}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{2000025.bmp}}
+\centerline{N=100}
+\end{minipage}
+\\
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{3000025.bmp}}
+\centerline{N=1000}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{4000025.bmp}}
+\centerline{N=10000}
+\end{minipage}
+\end{figure}
+\subsubsection{改变原点的坐标后来观察边界情况（这里取ox=0.0,oy=1.0,N=100）}
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{2001025.bmp}}
+\centerline{dimension=2.5}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{2001010.bmp}}
+\centerline{dimension=1.0}
+\end{minipage}
+\\
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{2001005.bmp}}
+\centerline{dimension=0.5}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{2001001.bmp}}
+\centerline{dimension=0.1}
+\end{minipage}
+\end{figure}
+\subsection{稍微更换后的Mandelbrot Set}
+\subsubsection{改动之处}
+我将原来的代码中的不收敛的点按经过的迭代次数进行了一个分类,详情请看colorfulmandelbrot.cpp,从而获得了一个“彩虹色”的Mandelbrot Set
+
+\subsubsection{结果}
+\begin{figure}[H]
+\centerline{\includegraphics[scale=0.1]{colorful.bmp}}
+\centerline{彩虹Mandelbrot Set}
+\end{figure}
+
+\section{结论}
+可以看出,dimension改变的是生成的bmp图片的尺寸大小,dimension越大,图片的尺寸也就越大.
+
+当最大迭代次数N越来越大时,展现出的Mandelbrot Set更加的光滑,但其实当N大于100之后,图像的变化已经很难用肉眼观察到,需要进行放大才能看到一些点的变化.
+
+当我们把视线移动到边界上时,若把图形放大,会看到边界处也在不断的产生一个又一个的小分形
+
+由彩色的Mnadelbrot Set图可以看出,其实大部分不收敛的点在经过20次以内的迭代已经体现出了其不收敛的性质,故只需要经过较少次的迭代便已经能够得出一个较好的Mandelbrot Set.
+
+\bibliographystyle{plain}
+\bibliography{jiminjun}
+
+\end{document}

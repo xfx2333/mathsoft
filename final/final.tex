@@ -1,0 +1,98 @@
+\documentclass[a4paper]{ctexart}
+
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\graphicspath{{figures/}}
+
+\title{最终项目作业:《Julia Set的分析和探索》}
+
+\author{嵇敏君 \\信息与计算科学 3200103322 }
+
+\begin{document}
+
+\maketitle
+
+
+\section{背景介绍}
+朱利亚集合（又译为茹利亚集合,英语：Julia set）是一个在复平面上形成分形的点的集合.以法国数学家加斯顿·朱利亚（Gaston Julia）的名字命名.下面我们便根据\cite{Julia}得到Julia Set
+
+\section{数学理论}
+朱利亚集合可以由下式进行反复迭代得到：$f_c(z)=z^2+c$.
+对于固定的复数c,取某一z值（如z = $z_0$）,可以得到序列
+$z_0,f_c(z_0),f_c(f_c(z_0))$,...
+这一序列可能反散于无穷大或始终处于某一范围之内并收敛于某一值.我们将使其不扩散的z值的集合称为朱利亚集合.
+
+\section{算法}
+\begin{verbatim}
+double cx,cy 
+int k=0
+For each pixel p of the image:
+  Let z be the complex number represented by p
+  Let z be a complex variable
+  Set z to 0
+  Do the following times:
+    If |z|>K(给定的常数) then color the pixel white, ned this loop prematurely, go to the next pixel
+    Otherwise replace z by z*z+c,k++
+  If the loop above reached its natural end: color the pixel p in black
+  Go to the next pixel
+\end{verbatim}
+
+\section{数值算例}
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test1.bmp}}
+\centerline{c=(-0.75,0)}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test2.bmp}}
+\centerline{c=(-0.618,0)}
+\end{minipage}
+\\
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test3.bmp}}
+\centerline{c=(-0.1,-1.0)}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test4.bmp}}
+\centerline{c=(0.45,-0.1428)}
+\end{minipage}
+\\
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test5.bmp}}
+\centerline{c=(0.285,0.01)}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test6.bmp}}
+\centerline{c=(0.285,0)}
+\end{minipage}
+\\
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test7.bmp}}
+\centerline{c=(-0.8,0.156)}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test8.bmp}}
+\centerline{c=(-0.835,-0.2321)}
+\end{minipage}
+\\
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test9.bmp}}
+\centerline{c=(-0.70176,-0.3842)}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\centerline{\includegraphics[width=0.8\textwidth]{test10.bmp}}
+\centerline{c=(0.5,0.5)}
+\end{minipage}
+\end{figure}
+
+\section{结论}
+可以看出,当c取值不同时,Julia set呈现出了截然不同的情况
+同时,我们发现,当c取（-0.75,0）时,所得到的Julia Set就是之前的MandelbrotSet分形
+
+\bibliographystyle{plain}
+\bibliography{jiminjun}
+
+\end{document}

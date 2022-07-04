@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cstdlib>
+#include "Window.h"
+#include "Julia.h"
+#include "bitmap.h"
+
+int main(int argc, char *argv[])
+{
+	if (argc < 4)
+	{
+		std::cerr << "Usage: " << argv[0]
+				  << " filename cx cy " << std::endl;
+		exit(-1);
+	}
+	
+	Window win(std::atof(argv[2]), std::atof(argv[3]));
+	double lpp = win.get_lpp();
+	double dim = win.get_dimension();
+	int width = win.get_width();
+	int height = win.get_height();
+	double cx = win.get_ox();
+	double cy = win.get_oy();
+
+	char *cache = new char[width * height * 3];
+
+	for (int j = 0; j < height; j++)
+		for (int i = 0; i < width; i++)
+		{
+			double x = -1.6 + lpp * i;
+			double y = -1.2 + lpp * j;
+			int pos = width * j + i;
+			int k  = 0;
+			Julia jun(std::complex<double>{x, y},
+						   std::complex<double>{cx, cy});
+			while (!jun.stop_criterion())
+			{
+				jun.forward_step();
+				k++;
+				if (k == 180)
+				  break;
+			}
+			cache[pos * 3] = k / 180 * 255;
+			cache[pos * 3 + 1] = 255;
+			cache[pos * 3 + 2] = 128;
+		}
+	build_bmp(argv[1], width, height, cache);
+	delete [] cache;
+	return 0;
+};
+
